@@ -2091,17 +2091,19 @@ class QSOFit():
                                    figsize=(12, 4))  # if no lines are fitted, there would be only one row
 
 
-        ax1.errorbar(wave, flux, yerr=err, c='k', ecolor='silver', label='data', zorder=2)
+
         ax1.plot(wave, f_conti_model, c='orange', label='continuum', zorder=5)
         ax1.plot(wave, f_conti_model-conti_pl, c='skyblue', label='FeII', zorder=3)
         ax1.plot(wave, conti_pl, c='orange', ls='--', zorder=4)
 
         if decomposition_host == True and self.decomposed == True:
             ax1.plot(wave, self.qso+self.host, 'pink', label='host+qso temp', zorder=3)
-            ax1.plot(wave, flux, 'grey', label='data-host', zorder=1)
             ax1.plot(wave, self.host, 'purple', label='host', zorder=4)
+            ax1.errorbar(wave, flux+self.host, yerr=err, c='k', ecolor='silver', label='data', zorder=1)
+            ax1.errorbar(wave, flux, yerr=err, c='grey', ecolor='lightgrey', label='data-host', zorder=2)
         else:
             host = self.flux_prereduced.min()
+            ax1.errorbar(wave, flux, yerr=err, c='k', ecolor='silver', label='data', zorder=2)
 
         ax1.scatter(wave[tmp_all], np.repeat(1.23*np.max(med_flux), len(wave[tmp_all])), color='grey',
                     marker='s', s=5, zorder=1)  # plot continuum region
